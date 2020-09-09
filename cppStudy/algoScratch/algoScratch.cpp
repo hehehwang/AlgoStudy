@@ -3,7 +3,6 @@
 
 using namespace std;
 
-//vector<vector<int>> adj; 
 int n;
 int adj[1001][1001] = { 0 };
 
