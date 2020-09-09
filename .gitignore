@@ -1,6 +1,6 @@
 # Pycharm
-*/.idea
+.idea/
 
 # Visaul Studio
-*/.vs
-*/x64
+.vs/
+x64/
