@@ -1,63 +1,19 @@
-﻿#include <iostream>
-#include <vector>
-
+﻿// 2480 주사위 세개
+#include <bits/stdc++.h>
 using namespace std;
-
-int n;
-int adj[1001][1001] = { 0 };
-
-
-void getEurlarCircuit(int here, vector<int>& circuit)
-{
-	for (int there = 0; there < n; ++there)
-		while (adj[here][there] > 0)
-		{
-			adj[here][there]--;
-			adj[there][here]--;
-			getEurlarCircuit(there, circuit);
-		}
-	circuit.push_back(here + 1);
-}
 
 int main()
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-
-	cin >> n;
-	for (int i = 0; i < n; ++i)
-	{
-		for (int j = 0; j < n; ++j)
-		{
-			cin >> adj[i][j];
-		}
-	}
-
-	bool ok = true;
-	for (int i = 0; i < n; ++i)
-	{
-		int sum = 0;
-		for (int j = 0; j < n; ++j)
-		{
-			sum += adj[i][j];
-		}
-		if (sum % 2 == 1)
-		{
-			ok = false;
-			break;
-		}
-	}
-	vector<int> circuit;
-	if (ok)
-	{
-		getEurlarCircuit(0, circuit);
-		for (int i = 0; i < circuit.size(); i++)
-		{
-			cout << circuit[i] << ' ';
-		}
-	}
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	int v[3];
+	cin >> v[0] >> v[1] >> v[2];
+	if (v[0] == v[1] && v[1] == v[2])
+		cout << (10000 + v[0] * 1000);
+	else if ( (v[0] == v[1]) || (v[0] == v[2]))
+		cout << 1000 + 100 * v[0];
+	else if (v[1] == v[2])
+		cout << 1000 + 100 * v[1];
 	else
-	{
-		cout << -1;
-	}
+		cout<< max(max(v[0], v[1]), v[2])*100;
 }
