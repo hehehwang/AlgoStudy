@@ -4,5 +4,8 @@
 # Visual Studio
 .vs/
 x64/
+./Debug
 *tlog
 *Debug
+*.vcxproj*
+*.sln
