@@ -27,5 +27,4 @@ int main(void) {
             if (!indeg[dest]) nodeg.push(dest);
         }
     }
-
 }
