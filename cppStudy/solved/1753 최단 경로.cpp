@@ -34,6 +34,7 @@ int main(void) {
 			pQ.push({ nv.cost + v.cost, nv.vert });
 		}
 	}
+	
 	FOR(i, 1, V+1) {
 		if (minDist[i] != INF) cout << minDist[i];
 		else cout << "INF";
