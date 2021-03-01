@@ -1,9 +1,4 @@
-# 1922 네트워크 연결
-input = __import__('sys').stdin.readline
-__import__('sys').setrecursionlimit(10**9)
-
-v = int(input())
-e = int(input())# 1197 최소 스패닝 트리
+# 1197 최소 스패닝 트리
 input = __import__('sys').stdin.readline
 __import__('sys').setrecursionlimit(10**9)
 
