@@ -20,7 +20,7 @@ while pQ:
     for nv in adj[vv]:
         nvc, nvv = nv
         newCost = nvc + vc
-        if minCost[nvv] < newCost: continue
+        if minCost[nvv] <= newCost: continue
         minCost[nvv] = newCost
         heappush(pQ, (newCost, nvv))
         route[nvv] = vv
