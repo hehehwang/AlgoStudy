@@ -64,7 +64,7 @@ int main(void) {
 			continue;
 		}
 		while (anc[a][0] != anc[b][0]) {
-			FORR(i, anc[a].size()-1, -1) {
+			FORR(i, anc[a].size()-1, -1){ 
 				if (anc[a][i] == anc[b][i]) continue;
 				a = anc[a][i];
 				b = anc[b][i];
