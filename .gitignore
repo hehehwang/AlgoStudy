@@ -1,11 +1,17 @@
+common/
+
 # Pycharm
 .idea/
-
+in.txt
+Temp/
 # Visual Studio
 .vs/
 x64/
-./Debug
-*tlog
-*Debug
+*Debug/
+*Release/
 *.vcxproj*
 *.sln
+algoScratch.*
+# Visual Studio Code
+.vscode/
+*.code-workspace
