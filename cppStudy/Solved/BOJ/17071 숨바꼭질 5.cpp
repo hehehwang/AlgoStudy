@@ -15,7 +15,7 @@ int main(void) {
     queue<pair<int, int>> Q;
     cin >> sis >> bro;
     Q.push({sis, 0});
-    FOR(i, 0, 2) fill(vis[i], vis[i] + LMT + 2, -1);
+    FOR(i, 0, 2) { fill(vis[i], vis[i] + LMT + 2, -1); }
     vis[0][sis] = 0;
     while (!Q.empty()) {
         int v, vt;
