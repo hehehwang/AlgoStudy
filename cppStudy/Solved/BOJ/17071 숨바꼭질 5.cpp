@@ -4,7 +4,7 @@
 #define FOR(i, n, m) for (int i = (n); i < (m); i++)
 using namespace std;
 
-const int LMT = 500'001;
+const int LMT = 500'000;
 int board[LMT + 2];
 int vis[2][LMT + 2];
 int main(void) {
@@ -18,18 +18,19 @@ int main(void) {
     FOR(i, 0, 2) { fill(vis[i], vis[i] + LMT + 2, -1); }
     vis[0][sis] = 0;
     while (!Q.empty()) {
-        int v, vt;
+        int v, vt, nvt;
         tie(v, vt) = Q.front();
+        nvt = vt + 1;
         Q.pop();
         for (int nv : {2 * v, v + 1, v - 1}) {
-            if (nv < 0 || LMT <= nv) continue;
-            if (vis[(vt + 1) % 2][nv] != -1) continue;
-            vis[(vt + 1) % 2][nv] = vt + 1;
-            Q.push({nv, vt + 1});
+            if (nv < 0 || LMT < nv) continue;
+            if (vis[nvt % 2][nv] != -1) continue;
+            vis[nvt % 2][nv] = nvt;
+            Q.push({nv, nvt});
         }
     }
     bool found = false;
-    while (bro + ans <= LMT) {
+    while (bro <= LMT) {
         if (vis[ans % 2][bro] <= ans) {
             found = true;
             break;
