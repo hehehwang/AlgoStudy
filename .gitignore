@@ -1,4 +1,9 @@
 testData/
+../cppStudy/input.txt
+../cppStudy/output.txt
+in.txt
+__pycache__
+*exec/
 
 # Pycharm
 .idea/
