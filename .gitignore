@@ -16,7 +16,8 @@ x64/
 *Release/
 *.vcxproj*
 *.sln
-algoScratch.*
 # Visual Studio Code
 .vscode/
 *.code-workspace
+# Sonarqube
+.scannerwork
