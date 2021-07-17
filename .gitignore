@@ -1,14 +1,17 @@
 testData/
-../cppStudy/input.txt
-../cppStudy/output.txt
-in.txt
+*.txt
 __pycache__
 *exec/
+
+# Mac
+*.dSYM
+*.DS_Store
 
 # Pycharm
 .idea/
 in.txt
 Temp/
+
 # Visual Studio
 .vs/
 x64/
@@ -16,8 +19,10 @@ x64/
 *Release/
 *.vcxproj*
 *.sln
+
 # Visual Studio Code
 .vscode/
 *.code-workspace
+
 # Sonarqube
 .scannerwork
