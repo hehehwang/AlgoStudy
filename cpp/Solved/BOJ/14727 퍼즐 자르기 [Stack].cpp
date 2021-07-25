@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-// 14727 퍼즐 자르기
+// 14727 퍼즐 자르기 [Stack]
 // https://www.acmicpc.net/problem/14727
 using namespace std;
 const int mxN = 1'000'002;

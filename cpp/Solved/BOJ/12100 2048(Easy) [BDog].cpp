@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-// 12100 2048 (Easy)(BD)
+// 12100 2048 (Easy)(BDog)
 #define FOR(i, n, m) for(int i=(n); i<(m); i++)
 
 int bN;

@@ -1,7 +1,9 @@
 testData/
 *.txt
 __pycache__
+solving*
 *exec/
+*.exe
 
 # Mac
 *.dSYM
@@ -10,7 +12,6 @@ __pycache__
 # Pycharm
 .idea/
 in.txt
-Temp/
 
 # Visual Studio
 .vs/
