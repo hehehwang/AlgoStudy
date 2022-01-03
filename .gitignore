@@ -4,6 +4,7 @@ solving*
 *exec/
 *.exe
 Contest/*
+ce_finder/target/*
 
 # Mac
 *.dSYM
