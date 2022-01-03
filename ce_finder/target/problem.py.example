@@ -1,0 +1,34 @@
+# 1107 리모컨
+targetNum = input().strip()
+if int(input()):
+    broken = list((map(int, input().split())))
+else:
+    broken = []
+notBroken = [i for i in range(10) if i not in broken]
+notBroken.sort()
+cases = []
+
+def mkNum(madeNum:list, d:int = 0):
+    global targetNum, notBroken
+    if not notBroken: return None
+    if len(madeNum) == len(targetNum)+d: return madeNum
+    minDiff, rtn = 5000000, 0
+    for btn in notBroken:
+        madeNum.append(str(btn))
+        rtnNum = mkNum(madeNum, d)
+        num = int(''.join(rtnNum))
+        diff = abs(num - int(targetNum))
+        if diff < minDiff and (len(rtnNum)==1 or rtnNum[0]!='0'):
+            minDiff = diff
+            rtn = num
+        madeNum.pop()
+    return list(str(rtn))
+
+for i in range(3):
+    num = mkNum([], -1+i)
+    if num: cases.append(int(''.join(num)))
+diffs = [abs(int(targetNum)-c) for c in cases]
+for i in range(len(diffs)): diffs[i] += len(str(cases[i]))
+diffs += [abs(int(targetNum)-100)]
+
+print(min(diffs))
