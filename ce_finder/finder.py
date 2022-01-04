@@ -20,6 +20,15 @@ def processCe(inp, ans, prob):
     print(prob)
 
 
+def make_command(file_name: list) -> list:
+    if file_name[0].split(".")[-1] == "py":
+        return ["python"] + file_name
+    elif file_name[0].split(".")[-1] == "js":
+        return ["node"] + file_name
+    else:
+        return file_name
+
+
 def main(problem, answer, inputGenerator):
     path = "ce_finder/target/"
     ceFound = False
@@ -27,8 +36,9 @@ def main(problem, answer, inputGenerator):
     gen = inputGenerator()
 
     problem, answer = [path + problem], [path + answer]
-    if problem[0].split(".")[-1] == "py":
-        problem = ["python"] + problem
+    # if problem[0].split(".")[-1] == "py":
+    #     problem = ["python"] + problem
+    problem = make_command(problem)
     if answer[0].split(".")[-1] == "py":
         answer = ["python"] + answer
     for inp in gen:
@@ -54,4 +64,4 @@ def main(problem, answer, inputGenerator):
 
 
 if __name__ != "__module__":
-    main("problem.py", "solution", p1107)
+    main("problem.js", "solution", p1107)
