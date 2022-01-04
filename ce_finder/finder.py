@@ -1,3 +1,7 @@
+# TODO:
+# 1. Add argparse
+# 2. Add information about elapsed time
+# 3. Colorize output
 import asyncio
 from input_generator import *
 
@@ -29,24 +33,18 @@ def make_command(file_name: list) -> list:
         return file_name
 
 
-def main(problem, answer, inputGenerator):
+def main(prob_filename, ans_filename, inputGenerator):
     path = "ce_finder/target/"
     ceFound = False
     idx = 1
     gen = inputGenerator()
 
-    problem, answer = [path + problem], [path + answer]
-    # if problem[0].split(".")[-1] == "py":
-    #     problem = ["python"] + problem
-    problem = make_command(problem)
-    if answer[0].split(".")[-1] == "py":
-        answer = ["python"] + answer
+    prob_path, ans_path = [path + prob_filename], [path + ans_filename]
+    prob_cmd, ans_cmd = make_command(prob_path), make_command(ans_path)
     for inp in gen:
         loop = asyncio.get_event_loop()
         print("Case No.", idx)
-        commands = asyncio.gather(
-            runCmd(answer, inp), runCmd(problem, inp)  # ['python', './prob.py']
-        )
+        commands = asyncio.gather(runCmd(ans_cmd, inp), runCmd(prob_cmd, inp))
         ans, prob = loop.run_until_complete(commands)
         idx += 1
         print("Input: ")
@@ -64,4 +62,4 @@ def main(problem, answer, inputGenerator):
 
 
 if __name__ != "__module__":
-    main("problem.js", "solution", p1107)
+    main("problem.py", "solution", p1107)
