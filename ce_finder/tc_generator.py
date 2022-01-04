@@ -1,3 +1,6 @@
+# TODO:
+# - add information about generators
+# - sort generators by its number
 import random
 from itertools import combinations
 from random import randint

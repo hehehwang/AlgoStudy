@@ -1,14 +1,12 @@
 # TODO:
-# 0. Clearout path related problems & refactor structure
-# 1. Add argparse
-# 2. Add information about elapsed time
-# 3. Colorize output
+# - Add information about elapsed time
+# - Fluent message and options
+import argparse
 import asyncio
-import pathlib
 from pathlib import Path
 from typing import Iterator, List
 
-from input_generator import *
+from tc_generator import TcGen
 
 
 async def runCmd(args: List[str], stdin: str) -> str:
@@ -19,14 +17,14 @@ async def runCmd(args: List[str], stdin: str) -> str:
     return stdout.decode().strip()
 
 
-def ce_found_msg(wa, ans, prob):
+def ce_found_msg(stdin, ans, wa):
     print("!!!!Counter example found!!!!")
     print("INPUT:")
-    print(wa)
+    print(stdin)
     print("ANSWER:")
     print(ans)
     print("WA:")
-    print(prob)
+    print(wa)
 
 
 def make_command(file_name: Path) -> List[str]:
@@ -39,35 +37,48 @@ def make_command(file_name: Path) -> List[str]:
         return [resolved_file_path]
 
 
-def main(prob_filename: str, ans_filename: str, case_gen: Iterator):
-    base_path = Path("target/")
+def main(target_filename: str, ans_filename: str, tc_gen: Iterator):
     ceFound = False
     idx = 1
-    gen = case_gen()
+    gen = tc_gen()
 
-    prob_path, ans_path = base_path.joinpath(prob_filename), base_path.joinpath(
+    base_path = Path("target/")
+    target_path, ans_path = base_path.joinpath(target_filename), base_path.joinpath(
         ans_filename
     )
-    prob_cmd, ans_cmd = make_command(prob_path), make_command(ans_path)
+    target_cmd, ans_cmd = make_command(target_path), make_command(ans_path)
     for inp in gen:
         loop = asyncio.get_event_loop()
         print("Case No.", idx)
-        commands = asyncio.gather(runCmd(ans_cmd, inp), runCmd(prob_cmd, inp))
-        ans, prob = loop.run_until_complete(commands)
+        commands = asyncio.gather(runCmd(ans_cmd, inp), runCmd(target_cmd, inp))
+        ans, target = loop.run_until_complete(commands)
         idx += 1
         print("Input: ")
         print(inp)
         print("Answer: ")
         print(ans)
         print()
-        if ans != prob:
+        if ans != target:
             ceFound = True
-            ce_found_msg(inp, ans, prob)
+            ce_found_msg(inp, ans, target)
             loop.close()
             break
 
     print("NO CE FOUND T_T") if not ceFound else print("CE FOUND!")
 
 
-if __name__ != "__module__":
-    main("problem.py", "solution", p1107)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("target_filename", type=str)
+    parser.add_argument("ans_filename", type=str)
+    parser.add_argument("problem_number", type=int)
+    args = parser.parse_args()
+    problem_name = "p" + str(args.problem_number)
+    if hasattr(TcGen, problem_name):
+        main(
+            args.target_filename,
+            args.ans_filename,
+            getattr(TcGen, problem_name),
+        )
+    else:
+        print("No such problem")
