@@ -1,45 +1,53 @@
 # TODO:
+# 0. Clearout path related problems & refactor structure
 # 1. Add argparse
 # 2. Add information about elapsed time
 # 3. Colorize output
 import asyncio
+import pathlib
+from pathlib import Path
+from typing import Iterator, List
+
 from input_generator import *
 
 
-async def runCmd(args, inp):
+async def runCmd(args: List[str], stdin: str) -> str:
     process = await asyncio.create_subprocess_exec(
         *args, stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE
     )
-    stdout, stderr = await process.communicate(input=inp.encode())
+    stdout, stderr = await process.communicate(input=stdin.encode())
     return stdout.decode().strip()
 
 
-def processCe(inp, ans, prob):
+def ce_found_msg(wa, ans, prob):
     print("!!!!Counter example found!!!!")
     print("INPUT:")
-    print(inp)
+    print(wa)
     print("ANSWER:")
     print(ans)
     print("WA:")
     print(prob)
 
 
-def make_command(file_name: list) -> list:
-    if file_name[0].split(".")[-1] == "py":
-        return ["python"] + file_name
-    elif file_name[0].split(".")[-1] == "js":
-        return ["node"] + file_name
+def make_command(file_name: Path) -> List[str]:
+    resolved_file_path = str(file_name.resolve())
+    if file_name.suffix == ".py":
+        return ["python", resolved_file_path]
+    elif file_name.suffix == ".js":
+        return ["node", resolved_file_path]
     else:
-        return file_name
+        return [resolved_file_path]
 
 
-def main(prob_filename, ans_filename, inputGenerator):
-    path = "ce_finder/target/"
+def main(prob_filename: str, ans_filename: str, case_gen: Iterator):
+    base_path = Path("target/")
     ceFound = False
     idx = 1
-    gen = inputGenerator()
+    gen = case_gen()
 
-    prob_path, ans_path = [path + prob_filename], [path + ans_filename]
+    prob_path, ans_path = base_path.joinpath(prob_filename), base_path.joinpath(
+        ans_filename
+    )
     prob_cmd, ans_cmd = make_command(prob_path), make_command(ans_path)
     for inp in gen:
         loop = asyncio.get_event_loop()
@@ -54,7 +62,7 @@ def main(prob_filename, ans_filename, inputGenerator):
         print()
         if ans != prob:
             ceFound = True
-            processCe(inp, ans, prob)
+            ce_found_msg(inp, ans, prob)
             loop.close()
             break
 
