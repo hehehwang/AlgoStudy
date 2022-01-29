@@ -37,7 +37,33 @@ def make_command(file_name: Path) -> List[str]:
         return [resolved_file_path]
 
 
-def main(target_filename: str, ans_filename: str, tc_gen: Iterator):
+def validate_target(target_output: str, answer_output: str, validate_float: bool):
+    if not validate_float:
+        return target_output == answer_output
+    else:
+        target_split = target_output.split()
+        answer_split = answer_output.split()
+        if len(target_split) != len(answer_split):
+            return False
+        for i in range(len(target_split)):
+            try:
+                target_split[i] = float(target_split[i])
+                answer_split[i] = float(answer_split[i])
+            except ValueError:
+                return False
+            if target_split[i] != answer_split[i]:
+                return False
+        return True
+
+
+def main(args: argparse.Namespace):
+    problem_name = "p" + str(args.problem_number)
+    if not hasattr(TcGen, problem_name):
+        raise Exception("Problem number not found")
+
+    target_filename = args.target_filename
+    ans_filename = args.ans_filename
+    tc_gen = getattr(TcGen, problem_name)
     ceFound = False
     idx = 1
     gen = tc_gen()
@@ -58,7 +84,9 @@ def main(target_filename: str, ans_filename: str, tc_gen: Iterator):
         print("Answer: ")
         print(ans)
         print()
-        if ans != target:
+
+        val = validate_target(target, ans, args.validate_float)
+        if not val:
             ceFound = True
             ce_found_msg(inp, ans, target)
             loop.close()
@@ -72,13 +100,14 @@ if __name__ == "__main__":
     parser.add_argument("target_filename", type=str)
     parser.add_argument("ans_filename", type=str)
     parser.add_argument("problem_number", type=int)
+    parser.add_argument("-vf", "--validate_float", action="store_true")
     args = parser.parse_args()
-    problem_name = "p" + str(args.problem_number)
-    if hasattr(TcGen, problem_name):
-        main(
-            args.target_filename,
-            args.ans_filename,
-            getattr(TcGen, problem_name),
-        )
-    else:
-        print("No such problem")
+    main(args)
+    # if hasattr(TcGen, problem_name):
+    #     main(
+    #         args.target_filename,
+    #         args.ans_filename,
+    #         getattr(TcGen, problem_name),
+    #     )
+    # else:
+    #     print("No such problem")

@@ -2,7 +2,7 @@
 # - add information about generators
 # - sort generators by its number
 import random
-from itertools import combinations
+from itertools import combinations, permutations, product
 from random import randint
 
 
@@ -64,7 +64,22 @@ class TcGen:
         for i in range(1, 1_000_000_001):
             yield str(i)
 
+    def p20149():
+        # yield 20149 inputs
+        # example:
+        # 1 1 5 5
+        # 1 5 5 1
+        bw = (-3, 4)
+        points = list(product(range(*bw), repeat=2))
+        for l1 in permutations(points, 2):
+            for l2 in permutations(points, 2):
+                inp = f"""{l1[0][0]} {l1[0][1]} {l1[1][0]} {l1[1][1]}
+{l2[0][0]} {l2[0][1]} {l2[1][0]} {l2[1][1]}"""
+                yield inp
+
 
 if __name__ == "__main__":
     pg = getattr(TcGen, "p" + str(int(input())))()
-    print(next(pg))
+    for _ in range(10):
+        print(next(pg))
+        print()

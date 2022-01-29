@@ -1,26 +1,29 @@
-import subprocess
 import os
-from time import perf_counter
-from pathlib import Path
 import platform
+import subprocess
+from pathlib import Path
+from time import perf_counter
+from typing import List
 
-PREFIX = "labudovi."
+PREFIX = "20149_"
 IO_SELECTOR = ["i", "o"]
-POSTFIX = ""
-IDX_RANGE = 1, 14
+POSTFIX = ".txt"
+IDX_RANGE = 1, 18
 IDX_CONST_LEN = 2
 
 INPUT_DIR = Path("testdata/input/")
 IS_OUTPUT = True
 OUTPUT_DIR = Path("testdata/output/")
 
-LANGUAGE = "c++"
+LANGUAGE = "python"
 FILE_NAME = "solving"
 
+COMPARE_NUMS = True
 
-def run(dir: str, stdin: str):
+
+def run(command: List[str], stdin: str):
     process = subprocess.Popen(
-        [dir], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
 
     runtime_start = perf_counter()
@@ -35,15 +38,16 @@ def run(dir: str, stdin: str):
 
 def runner():
     if LANGUAGE.lower() in ["c++", "cpp", "c"]:
-        file_path = Path(
+        file_path = [
             "exec/solving" + (".exe" if platform.system() == "Windows" else "")
-        )
+        ]
+
     elif LANGUAGE.lower() in ["python", "python3", "py"]:
-        file_path = Path("solving.py")
+        file_path = ["python", "solving.py"]
     else:
         raise Exception("Language not supported")
 
-    if not os.path.isfile(file_path):
+    if not os.path.isfile(file_path[-1]):
         raise Exception("File not found in " + str(file_path))
 
     for i in range(IDX_RANGE[0], IDX_RANGE[1] + 1):
@@ -66,7 +70,7 @@ def runner():
 
         # print(file_path)
         # print(input_data)
-        result = run(str(file_path), input_data)
+        result = run(file_path, input_data)
         result_handler(idx, result, answer_data if IS_OUTPUT else None)
 
 
@@ -78,17 +82,38 @@ def result_handler(idx, result, answer):
         print(stderr)
     else:
         if IS_OUTPUT:
-            if stdout == answer:
-                print("Correct")
+            if not COMPARE_NUMS:
+                if stdout == answer:
+                    print("Correct")
+                else:
+                    print("Wrong")
+                    print("Expected:")
+                    print(answer)
+                    print("Got:")
+                    print(stdout)
             else:
-                print("Wrong")
-                print("Expected:")
-                print(answer)
-                print("Got:")
-                print(stdout)
+                stdout_split = stdout.split()
+                answer_split = answer.split()
+                for i in range(max(len(stdout_split), len(answer_split))):
+                    if len(stdout) == i:
+                        print("elements of stdout is less than answer")
+                        break
+                    if len(answer) == i:
+                        print("elements of answer is less than stdout")
+                        break
+                    if float(stdout_split[i]) != float(answer_split[i]):
+                        print("Wrong")
+                        print("Expected:")
+                        print(answer)
+                        print("Got:")
+                        print(stdout)
+                        break
+                else:
+                    print("Correct")
         else:
             print("Output:")
             print(stdout)
+
     print("Runtime: " + str(runtime) + " ms")
 
 
