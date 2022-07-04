@@ -3,10 +3,21 @@
 # - sort generators by its number
 import random
 from itertools import combinations, permutations, product
-from random import randint
+from random import randint, sample
 
 
 class TcGen:
+    def p1012():
+        r, c = 3, 4
+        for _ in range(1000):
+            k = randint(0, r * c)
+            rtn = f"1\n{r} {c} {k}\n"
+            samples = sample(range(r * c), k)
+            for s in samples:
+                rc, cc = s % r, s // r
+                rtn += f"{rc} {cc}\n"
+            yield rtn
+
     def p1799(size=5):
         for i in range(1000):
             rtn = ""
@@ -35,7 +46,7 @@ class TcGen:
         for N in range(2, 15):
             for t in range(1, N):
                 Bset = set()
-                for a in range(2 ** N):
+                for a in range(2**N):
                     A = bin(a)[2 : 2 + N]
                     A = "0" * (N - len(A)) + A
                     B = ["0"] * N
@@ -52,11 +63,11 @@ class TcGen:
 
     def p1300():
         for N in range(1, 10):
-            for K in range(1, min(10 ** 9, N * N) + 1):
+            for K in range(1, min(10**9, N * N) + 1):
                 inp = str(N) + "\n" + str(K)
                 yield inp
-        for N in range(10 ** 3, 10 ** 5 + 1):
-            for K in range(1, min(10 ** 9, N * N) + 1, min(10 ** 9, N * N) // 1000 + 1):
+        for N in range(10**3, 10**5 + 1):
+            for K in range(1, min(10**9, N * N) + 1, min(10**9, N * N) // 1000 + 1):
                 inp = str(N) + "\n" + str(K)
                 yield inp
 

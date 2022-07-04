@@ -9,7 +9,7 @@ from typing import Iterator, List
 from tc_generator import TcGen
 
 
-async def runCmd(args: List[str], stdin: str) -> str:
+async def run_command(args: List[str], stdin: str) -> str:
     process = await asyncio.create_subprocess_exec(
         *args, stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE
     )
@@ -76,7 +76,9 @@ def main(args: argparse.Namespace):
     for inp in gen:
         loop = asyncio.get_event_loop()
         print("Case No.", idx)
-        commands = asyncio.gather(runCmd(ans_cmd, inp), runCmd(target_cmd, inp))
+        commands = asyncio.gather(
+            run_command(ans_cmd, inp), run_command(target_cmd, inp)
+        )
         ans, target = loop.run_until_complete(commands)
         idx += 1
         print("Input: ")
