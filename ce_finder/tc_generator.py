@@ -88,6 +88,22 @@ class TcGen:
 {l2[0][0]} {l2[0][1]} {l2[1][0]} {l2[1][1]}"""
                 yield inp
 
+    def p2636():
+        """
+        yield random inputs of boj problen No.2646
+        """
+        R, C = 12, 12
+        for _ in range(100_000_000):
+            inp = f"{R} {C}\n"
+            for r in range(R):
+                for c in range(C):
+                    if r == R - 1 or c == C - 1 or r == 0 or c == 0:
+                        inp += "0 "
+                    else:
+                        inp += f"{randint(0, 1)} "
+                inp += "\n"
+            yield inp
+
 
 if __name__ == "__main__":
     pg = getattr(TcGen, "p" + str(int(input())))()
