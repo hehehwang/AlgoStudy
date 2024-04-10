@@ -1,7 +1,10 @@
-*.txt
 __pycache__
 solving*
-*exec/
+io/
+bin/
+target/
+*.lock
+
 *.exe
 Contest/*
 ce_finder/target/*
